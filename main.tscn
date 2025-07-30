@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpvtc3tsf5ycx"]
+
+[ext_resource type="Script" path="res://game_grid.gd" id="1_ii3ay"]
+
+[node name="Main" type="Node3D"]
+
+[node name="Timeframe" type="Node3D" parent="."]
+
+[node name="GameGrid" type="Node3D" parent="."]
+script = ExtResource("1_ii3ay")
+
+[node name="Camera3D" type="Camera3D" parent="GameGrid"]
+transform = Transform3D(0.889361, -0.197531, 0.412334, 0, 0.901855, 0.432039, -0.457207, -0.384238, 0.802074, 2.00604, 1.49133, 3.10143)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.511218, 0.859451, 0, -0.859451, 0.511218, 0, 2.35004, 0)
