@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dpvtc3tsf5ycx"]
 
-[ext_resource type="Script" path="res://game_grid.gd" id="1_ii3ay"]
+[ext_resource type="Script" uid="uid://bjiaprx0jk6ug" path="res://game_grid.gd" id="1_ii3ay"]
 
 [node name="Main" type="Node3D"]
 
@@ -10,7 +10,50 @@
 script = ExtResource("1_ii3ay")
 
 [node name="Camera3D" type="Camera3D" parent="GameGrid"]
-transform = Transform3D(0.889361, -0.197531, 0.412334, 0, 0.901855, 0.432039, -0.457207, -0.384238, 0.802074, 2.00604, 1.49133, 3.10143)
+transform = Transform3D(0.892253, -0.194204, 0.407639, -0.0490386, 0.855766, 0.515034, -0.448865, -0.479531, 0.754036, 14.6181, 17.855, 24.5971)
+projection = 1
+size = 14.196
+near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.511218, 0.859451, 0, -0.859451, 0.511218, 0, 2.35004, 0)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -255.02
+offset_top = 50.62
+offset_right = -68.02
+offset_bottom = 185.62
+grow_horizontal = 0
+alignment = 1
+
+[node name="XSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 2
+max_value = 20.0
+step = 0.5
+
+[node name="YSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+max_value = 20.0
+step = 0.5
+
+[node name="ZSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+max_value = 20.0
+step = 0.5
