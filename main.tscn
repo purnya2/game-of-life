@@ -6,9 +6,11 @@
 
 [node name="Timeframe" type="Node3D" parent="."]
 
+[node name="CSGBox3D" type="CSGBox3D" parent="Timeframe"]
+visible = false
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.903628, -0.228845, 0.362058, -0.000534482, 0.8447, 0.53524, -0.428318, -0.483852, 0.763172, 14.6181, 17.855, 24.5971)
-projection = 1
+transform = Transform3D(0.768038, -0.385316, 0.511517, -1.86613e-08, 0.798741, 0.601676, -0.640405, -0.46211, 0.613463, 15.1779, 17.855, 18.9697)
 size = 14.196
 near = 0.001
 

@@ -9,21 +9,26 @@ var alive : bool = true
 var instance_map : Dictionary[Vector3i, Cell]
 
 var alive_radius : int = 1
-var neighbors_count_needed_to_stay_alive = 2
+const neighbors_count_needed_to_stay_alive = 2
 
-var neighbors : Array = []
+var dead_neighbor: Array[Vector3i] = []
+
 var calculated_if_alive : bool = false
+var allowed_to_calculate : bool = false
+
+var lifetime : int = 2
 
 #var empty_neightbors : Dictio
 ## calcualate if you can be alive
 ## give neighboring cells a value
 
 func _process(delta) -> void:
-	if !calculated_if_alive:
+	if !calculated_if_alive and allowed_to_calculate:
 		check_if_alive()
 
 func check_if_alive() -> void:
 	var neighbor_count : int = 0
+	dead_neighbor.clear() 
 	
 	for x in range(gridposition.x - alive_radius, gridposition.x + alive_radius+1):
 			for y in range(gridposition.y - alive_radius, gridposition.y + alive_radius+1):
@@ -32,7 +37,10 @@ func check_if_alive() -> void:
 						if neighbor_pos != gridposition :
 							if instance_map.has(neighbor_pos):
 								neighbor_count += 1
-	if neighbor_count >= neighbors_count_needed_to_stay_alive: #LOL??
+							else:
+								dead_neighbor.append(neighbor_pos)
+								
+	if neighbor_count >= neighbors_count_needed_to_stay_alive and neighbor_count<=neighbors_count_needed_to_stay_alive+1: #LOL name might be too long??
 		alive = true
 	else :
 		$CSGBox3D.material_override = StandardMaterial3D.new()
@@ -43,4 +51,5 @@ func check_if_alive() -> void:
 
 func reset()-> void:
 	calculated_if_alive = false
-	neighbors = []
+	allowed_to_calculate = false
+	dead_neighbor = []

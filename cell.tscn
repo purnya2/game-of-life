@@ -18,17 +18,20 @@ script = ExtResource("1_idh30")
 
 [node name="Z" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+visible = false
 radius = 0.015
 height = 56.1406
 material = SubResource("StandardMaterial3D_yh0nt")
 
 [node name="Y" type="CSGCylinder3D" parent="."]
+visible = false
 radius = 0.015
 height = 111.864
 material = SubResource("StandardMaterial3D_gwrgs")
 
 [node name="X" type="CSGCylinder3D" parent="."]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+visible = false
 radius = 0.015
 height = 158.359
 material = SubResource("StandardMaterial3D_2yjhv")
