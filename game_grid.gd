@@ -2,20 +2,18 @@ extends Node3D
 
 var cell_scene = preload("res://cell.tscn")
 
-var gridspacing_x : float = 1.2
-var gridspacing_y : float = 1.2
-var gridspacing_z : float = 1.2
+var gridspacing_x : float = 1.0
+var gridspacing_y : float = 1.0
+var gridspacing_z : float = 1.0
 
 var x_size = 100
 var y_size = 100
 var z_size = 100
 
-var alive_cells = []
-var cell_instances = []
 
 var t : int = 0
 var time_accumulated : float = 0
-var time_interval : float = 0.01# with this you can decide how fast or slow the evolution is
+var time_interval : float = 0.5 # with this you can decide how fast or slow the evolution is
 
 
 
@@ -25,6 +23,7 @@ var children_map: Dictionary[Vector3i,Cell] = {} # I need this because I have to
 
 var commands : Dictionary[String, Array] = {}
 
+var instance_map_history : Array[Dictionary]
 
 
 func _ready() -> void:
@@ -38,50 +37,39 @@ func _ready() -> void:
 	for yz in range(1,6):
 		alive.append(Vector3i(0,yz,yz))
 
-
 	commands = {
 	"alive" : alive,
 	"dead" : []
 	}
 	
-	
-	
+
 func _process(delta: float) -> void:
 	reposition_cells()
 	time_accumulated += delta
 	if time_accumulated >= time_interval:
 		time_accumulated = 0.0
-		
-		
-		
-		
 		print("t = " + str(t))
 
 		execute_commands()	# Execute commands, populate instance map
-		 # position cells inside instance map
 		var next_cells : Array = await calculate_dead_and_alives()			# Calculate which cells will stay alive, interrogate here each cell
-		
 		commands = construct_commands(next_cells[0],next_cells[1])		# Make commands for the next time loop, 
-		
 		reset_cells()
+		
+		instance_map_history.append(instance_map.duplicate())
 		t += 1						# Progress timestamp
-
-
 
 
 func calculate_dead_and_alives():
 	var neighbor_count_overlap_map : Dictionary[Vector3i, int] = {}
-	## for now this only calculates who STAYS dead, and not who is born...!!
 	var next_alives : Array[Vector3i] = []
-	
 	var next_deads : Array[Vector3i] = []
+	
 	for key_pos in instance_map:
 			
 		var cell = instance_map[key_pos]
 		
 		if(cell.calculated_if_alive != true):
 			await cell.calculation_finished
-		
 		
 		if !cell.alive :
 			next_deads.append(key_pos)
@@ -92,11 +80,8 @@ func calculate_dead_and_alives():
 			else:
 				neighbor_count_overlap_map[dead_neighbor_pos] += 1
 	
-	
 	for pos in neighbor_count_overlap_map:
-		if instance_map.has(pos):
-			print("ERROR!!!!")
-		elif neighbor_count_overlap_map[pos] == 4 :
+		if neighbor_count_overlap_map[pos] == 4 :
 			next_alives.append(pos)
 
 	return [next_alives,next_deads]
@@ -126,13 +111,11 @@ func construct_commands(next_alives, next_deads) -> Dictionary[String, Array] :
 		"alive" : next_alives,
 		"dead" : next_deads
 	}
-	
 	return new_commands
 
 
 func reposition_cells() -> void : 
-	var gridspacing = Vector3(gridspacing_x+ %XSpacingSlider.value, gridspacing_y+%YSpacingSlider.value,gridspacing_z+%ZSpacingSlider.value)
-	
+	var gridspacing = Vector3(gridspacing_x+ %XSpacingSlider.value, gridspacing_y+%XSpacingSlider.value,gridspacing_z+%XSpacingSlider.value)
 	var scale_matrix = Transform3D().scaled(gridspacing)
 	
 	for key_pos in instance_map:

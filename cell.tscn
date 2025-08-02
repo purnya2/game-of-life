@@ -1,6 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://gkwxvftetma0"]
+[gd_scene load_steps=6 format=3 uid="uid://gkwxvftetma0"]
 
 [ext_resource type="Script" uid="uid://bk3w1t056gorm" path="res://cell.gd" id="1_idh30"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7c3yk"]
+albedo_color = Color(0.94, 0.767667, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yh0nt"]
 albedo_color = Color(0, 0, 1, 1)
@@ -15,6 +18,7 @@ albedo_color = Color(1, 0, 0, 1)
 script = ExtResource("1_idh30")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+material = SubResource("StandardMaterial3D_7c3yk")
 
 [node name="Z" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)

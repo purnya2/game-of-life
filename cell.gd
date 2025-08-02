@@ -16,11 +16,7 @@ var dead_neighbor: Array[Vector3i] = []
 var calculated_if_alive : bool = false
 var allowed_to_calculate : bool = false
 
-var lifetime : int = 2
 
-#var empty_neightbors : Dictio
-## calcualate if you can be alive
-## give neighboring cells a value
 
 func _process(delta) -> void:
 	if !calculated_if_alive and allowed_to_calculate:

@@ -1,21 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpvtc3tsf5ycx"]
+[gd_scene load_steps=3 format=3 uid="uid://dpvtc3tsf5ycx"]
 
 [ext_resource type="Script" uid="uid://bjiaprx0jk6ug" path="res://game_grid.gd" id="1_ii3ay"]
+
+[sub_resource type="Environment" id="Environment_ig7tw"]
+background_mode = 1
+background_color = Color(0.1806, 0.18354, 0.21, 1)
 
 [node name="Main" type="Node3D"]
 
 [node name="Timeframe" type="Node3D" parent="."]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Timeframe"]
-visible = false
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.768038, -0.385316, 0.511517, -1.86613e-08, 0.798741, 0.601676, -0.640405, -0.46211, 0.613463, 15.1779, 17.855, 18.9697)
+environment = SubResource("Environment_ig7tw")
 size = 14.196
 near = 0.001
 
 [node name="GameGrid" type="Node3D" parent="."]
 script = ExtResource("1_ii3ay")
+
+[node name="ReplayGrid" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.511218, 0.859451, 0, -0.859451, 0.511218, 0, 2.35004, 0)
