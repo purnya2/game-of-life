@@ -8,8 +8,8 @@ var gridposition : Vector3i
 var alive : bool = true
 var instance_map : Dictionary[Vector3i, Cell]
 
-var alive_radius : int = 1
-const neighbors_count_needed_to_stay_alive = 2
+var alive_radius : int = 2
+const neighbors_count_needed_to_stay_alive = 3
 
 var dead_neighbor: Array[Vector3i] = []
 
@@ -18,7 +18,7 @@ var allowed_to_calculate : bool = false
 
 
 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	if !calculated_if_alive and allowed_to_calculate:
 		check_if_alive()
 
