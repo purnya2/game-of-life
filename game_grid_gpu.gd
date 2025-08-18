@@ -10,7 +10,7 @@ var z_size = 16
 
 var t: int = 0
 var time_accumulated: float = 0.0
-var time_interval: float = 0.5  # Run evolution every 0.5 seconds instead of every frame
+var time_interval: float = 0.2
 
 
 var rd : RenderingDevice
@@ -25,9 +25,6 @@ var grid_size : int
 var grid_data : PackedByteArray
 
 signal update_view
-
-
-
 
 func _ready():
 	prepare_grid()
@@ -99,7 +96,6 @@ func initialize_resources()-> void :
 		
 	input_buffer = rd.storage_buffer_create(grid_data.size(), grid_data)
 	
-	# Create output buffer with zeros to avoid undefined behavior
 	var empty_data = PackedByteArray()
 	empty_data.resize(grid_data.size())
 	for i in range(empty_data.size()):
@@ -135,7 +131,6 @@ func _process(delta) -> void:
 		time_accumulated = 0.0
 		evolution_step()
 		t += 1
-		print(t)
 		var data = prepare_data()
 		update_view.emit(data)
 		
