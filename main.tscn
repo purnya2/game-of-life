@@ -1,18 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpvtc3tsf5ycx"]
+[gd_scene load_steps=11 format=3 uid="uid://dpvtc3tsf5ycx"]
 
 [ext_resource type="Script" uid="uid://bmybkdsvosr38" path="res://game_grid_gpu.gd" id="1_0xm2m"]
-[ext_resource type="Script" uid="uid://bxxfhbq01pn12" path="res://camera.gd" id="1_1bvp3"]
+[ext_resource type="Script" path="res://camera.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://bjiaprx0jk6ug" path="res://game_grid_cpu.gd" id="1_ii3ay"]
 [ext_resource type="Script" uid="uid://dix28u8wx3wm4" path="res://camera_controller.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://chkw1pipf4tws" path="res://visualizer.gd" id="2_h2yge"]
+[ext_resource type="FontFile" uid="uid://ngj23n0oj3lo" path="res://fonts/JuliaMono-Light.ttf" id="6_5vw27"]
+[ext_resource type="Script" uid="uid://b61orh5o45dpg" path="res://no_drag.gd" id="6_7mycd"]
 
 [sub_resource type="Environment" id="Environment_ig7tw"]
 background_mode = 1
-background_color = Color(0.1806, 0.18354, 0.21, 1)
+background_color = Color(0.1672, 0.1672, 0.22, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4c57u"]
+font = ExtResource("6_5vw27")
+
+[sub_resource type="LabelSettings" id="LabelSettings_efxa6"]
+font = ExtResource("6_5vw27")
+font_size = 86
 
 [node name="Main" type="Node3D"]
-
-[node name="Timeframe" type="Node3D" parent="."]
 
 [node name="CameraController" type="Node3D" parent="."]
 script = ExtResource("1_lquwl")
@@ -31,10 +38,12 @@ script = ExtResource("1_0xm2m")
 [node name="Visualizer" type="Node3D" parent="GameGridGPU"]
 script = ExtResource("2_h2yge")
 
-[node name="GameGridCPU" type="Node3D" parent="."]
-script = ExtResource("1_ii3ay")
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="GameGridGPU/Visualizer"]
 
-[node name="ReplayGrid" type="Node3D" parent="."]
+[node name="Archive" type="Node3D" parent="."]
+
+[node name="GameGridCPU" type="Node3D" parent="Archive"]
+script = ExtResource("1_ii3ay")
 
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.214723, -0.504125, -0.836512, -0.126555, 0.834907, -0.535643, 0.968441, 0.22088, 0.115475, -41.816, 13.9338, -11.267)
@@ -44,46 +53,87 @@ light_color = Color(0.991496, 0.628471, 0.518436, 1)
 transform = Transform3D(0.82276, -0.238952, 0.515721, -0.56839, -0.34589, 0.746521, 6.05565e-08, -0.907338, -0.420402, 24.8855, 11.0645, 0.456317)
 shadow_opacity = 0.58
 
-[node name="DebugInfo" type="Label" parent="."]
-offset_left = 150.0
-offset_top = 299.0
-offset_right = 290.0
-offset_bottom = 361.0
-scale = Vector2(2.71, 2.71)
-text = "sdsdfsdf"
-
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
 anchor_right = 1.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+offset_left = 1152.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = -198.0
+offset_right = 556.0
+grow_vertical = 2
+
+[node name="DebugInfo" type="Label" parent="Control/Control"]
+layout_mode = 0
+offset_left = -1137.0
+offset_top = 743.0
+offset_right = -806.0
+offset_bottom = 856.0
+text = "generation :
+"
+label_settings = SubResource("LabelSettings_4c57u")
+
+[node name="GenerationCounter" type="Label" parent="Control/Control"]
+layout_mode = 0
+offset_left = -1138.0
+offset_top = 752.0
+offset_right = -17.0
+offset_bottom = 1065.0
+text = "0"
+label_settings = SubResource("LabelSettings_efxa6")
+
+[node name="CellCount" type="Label" parent="Control/Control"]
+unique_name_in_owner = true
+offset_left = -1137.0
+offset_top = 726.0
+offset_right = -806.0
+offset_bottom = 839.0
+text = "cells : 0
+"
+label_settings = SubResource("LabelSettings_4c57u")
+
+[node name="GrindInfo" type="Label" parent="Control/Control"]
+unique_name_in_owner = true
+offset_left = -1137.0
+offset_top = 707.0
+offset_right = -806.0
+offset_bottom = 820.0
+text = "grid_size : 
+"
+label_settings = SubResource("LabelSettings_4c57u")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 10
 anchor_right = 1.0
-offset_left = -255.02
-offset_top = 50.62
-offset_right = -68.02
-offset_bottom = 185.62
-grow_horizontal = 0
+offset_left = -265.0
+offset_top = 44.0
+offset_right = -68.0
+offset_bottom = 186.0
+grow_horizontal = 2
 alignment = 1
 
-[node name="XSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
+[node name="SpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 2
 max_value = 20.0
 step = 0.5
 
-[node name="YSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
+[node name="IntervalSlider" type="HSlider" parent="Control/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
-max_value = 20.0
-step = 0.5
+max_value = 10.0
+step = 0.05
+value = 2.0
 
 [node name="ZSpacingSlider" type="HSlider" parent="Control/VBoxContainer"]
 unique_name_in_owner = true
@@ -91,5 +141,15 @@ layout_mode = 2
 size_flags_vertical = 10
 max_value = 20.0
 step = 0.5
+
+[node name="NoDrag" type="Panel" parent="Control"]
+show_behind_parent = true
+layout_mode = 2
+offset_left = -280.0
+offset_top = 25.0
+offset_right = -43.0
+offset_bottom = 202.0
+mouse_filter = 2
+script = ExtResource("6_7mycd")
 
 [connection signal="update_view" from="GameGridGPU" to="GameGridGPU/Visualizer" method="_on_game_grid_gpu_update_view"]

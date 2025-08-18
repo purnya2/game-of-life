@@ -4,9 +4,14 @@ extends Node3D
 
 @onready var debugInfo = $"../DebugInfo"
 
-var x_size = 16
-var y_size = 16
-var z_size = 16
+var x_size = 64
+var y_size = 64
+var z_size =64
+
+var min_survive = 2
+var max_survive = 5
+var min_born = 5
+var max_born = 5
 
 var t: int = 0
 var time_accumulated: float = 0.0
@@ -18,7 +23,8 @@ var shader : RID
 var pipeline : RID
 var input_buffer : RID
 var output_buffer : RID
-var uniform_buffer : RID
+var dimension_buffer : RID
+var config_buffer : RID
 var uniform_set : RID
 
 var grid_size : int
@@ -31,6 +37,9 @@ func _ready():
 	initialize_resources()
 	var data = prepare_data()
 	update_view.emit(data)
+	
+	%GrindInfo.text = "grid_size : " +str(x_size)+"X"+str(y_size)+"X"+str(z_size)
+
 
 func prepare_grid() -> void :
 	grid_size = x_size*y_size*z_size  # Remove the +1 - this was causing buffer size mismatch
@@ -71,6 +80,7 @@ func prepare_grid() -> void :
 		if x_coord >= 0 and x_coord < x_size and y_coord >= 0 and y_coord < y_size and z_coord >= 0 and z_coord < z_size:
 			var index = x_coord + y_coord * x_size + z_coord * x_size * y_size
 			grid_data[index] = 1
+	%CellCount.text = "cells : " + str(cells.size())
 func initialize_resources()-> void :
 	grid_size = x_size*y_size*z_size
 	rd = RenderingServer.create_local_rendering_device()
@@ -103,8 +113,16 @@ func initialize_resources()-> void :
 	output_buffer = rd.storage_buffer_create(empty_data.size(), empty_data)
 
 	var dimension_data := PackedInt32Array([x_size, y_size, z_size, 0]).to_byte_array()  
-	uniform_buffer = rd.uniform_buffer_create(dimension_data.size(),dimension_data)
-
+	dimension_buffer = rd.uniform_buffer_create(dimension_data.size(),dimension_data)
+	
+	'''config:
+		0 : minimum cells needed to stay alive
+		1 : maximum cells to stay alive
+		2 : minimum cells to be born
+		3 : maximum cells to be born	
+	'''
+	var config_data := PackedInt32Array([min_survive, max_survive, min_born, max_born]).to_byte_array()  
+	config_buffer = rd.uniform_buffer_create(config_data.size(),config_data)
 	var input_data_uniform := RDUniform.new()
 	input_data_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	input_data_uniform.binding = 0
@@ -118,20 +136,27 @@ func initialize_resources()-> void :
 	var dimensions_uniform := RDUniform.new()
 	dimensions_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
 	dimensions_uniform.binding = 2
-	dimensions_uniform.add_id(uniform_buffer)
+	dimensions_uniform.add_id(dimension_buffer)
 	
-	uniform_set = rd.uniform_set_create([input_data_uniform, output_data_uniform, dimensions_uniform], shader, 0)
+	var config_uniform := RDUniform.new()
+	config_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
+	config_uniform.binding = 3
+	config_uniform.add_id(config_buffer)
+	
+	uniform_set = rd.uniform_set_create([input_data_uniform, output_data_uniform, dimensions_uniform,config_uniform], shader, 0)
 	
 	
 
 func _process(delta) -> void:
 	time_accumulated += delta
-	
+	time_interval = 3*0.607**(%IntervalSlider.value)
 	if time_accumulated >= time_interval:
 		time_accumulated = 0.0
 		evolution_step()
 		t += 1
+		$"../Control/Control/GenerationCounter".text=str(t)
 		var data = prepare_data()
+		%CellCount.text = "cells : " + str(data.size())
 		update_view.emit(data)
 		
 

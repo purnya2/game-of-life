@@ -1,15 +1,19 @@
 extends Node3D
 
-var dragging = false
-var right_dragging = false
+var dragging: bool = false
+var right_dragging: bool = false
+var is_inside_no_drag_area : bool = false
 var drag_position : Vector2
 
 
 func _ready():
 	Input.set_default_cursor_shape(Input.CURSOR_CAN_DROP)
+	
+func _process(delta: float) -> void:
+	is_inside_no_drag_area = $"../Control/NoDrag".nodrag_area
 
 func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not right_dragging:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not right_dragging and not is_inside_no_drag_area:
 		if event.pressed and not dragging:
 			Input.set_default_cursor_shape(Input.CURSOR_DRAG)
 			drag_position = event.position
@@ -19,7 +23,7 @@ func _input(event):
 			Input.set_default_cursor_shape(Input.CURSOR_CAN_DROP)
 			dragging = false
 			
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not dragging:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and not dragging and not is_inside_no_drag_area:
 		if event.pressed and not right_dragging:
 			Input.set_default_cursor_shape(Input.CURSOR_FDIAGSIZE)
 			drag_position = event.position
