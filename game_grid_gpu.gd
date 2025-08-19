@@ -154,7 +154,7 @@ func _process(delta) -> void:
 		time_accumulated = 0.0
 		evolution_step()
 		t += 1
-		$"../Control/Control/GenerationCounter".text=str(t)
+		%GenerationCounter.text=str(t)
 		var data = prepare_data()
 		%CellCount.text = "cells : " + str(data.size())
 		update_view.emit(data)
