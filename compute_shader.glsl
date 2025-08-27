@@ -86,6 +86,7 @@ void main(){
     if (is_cell_alive(pos.x - 1, pos.y - 1, pos.z + 1)) live_neighbors++;
     if (is_cell_alive(pos.x - 1, pos.y - 1, pos.z - 1)) live_neighbors++;
 
+    // vivo corrisponde a 1, morto corrisponde a 0
     uint current_state = uint(input_buffer.data[current_idx]);
 
     if (current_state == 1u) {

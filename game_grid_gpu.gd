@@ -6,7 +6,7 @@ extends Node3D
 
 var x_size = 64
 var y_size = 64
-var z_size =64
+var z_size = 64
 
 var min_survive = 2
 var max_survive = 5
